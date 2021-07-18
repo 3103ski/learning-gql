@@ -9,6 +9,8 @@ const { MONGODB } = require('./config');
 
 const pubsub = new PubSub();
 
+const PORT = process.env.port || 5000;
+
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
@@ -23,6 +25,9 @@ mongoose
 	.connect(MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => {
 		console.log('MongoDB Connected!');
-		return app.listen({ port: 5000 });
+		return app.listen({ port: PORT });
 	})
-	.then(() => console.log(`🚀 Server ready at http://localhost:5000${server.graphqlPath}`));
+	.then(() => console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`))
+	.catch((err) => {
+		console.log.error(err);
+	});
