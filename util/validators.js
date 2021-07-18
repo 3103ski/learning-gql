@@ -1,4 +1,4 @@
-module.exports.validateRegisterInput = (username, email, password, confirmPassword) => {
+module.exports.validateRegisterInput = (username, password, confirmPassword, email) => {
 	const errors = {};
 
 	if (username.trim() === '') {
@@ -6,13 +6,17 @@ module.exports.validateRegisterInput = (username, email, password, confirmPasswo
 	}
 
 	if (email.trim() === '') {
-		errors.email = 'Username must not be empty';
+		errors.email = 'Email must not be empty';
 	} else {
 		const regex =
 			/^([0-9a-zA-Z]([-.\w]*[0-9a-zA-z])*@([0-9a-zA_Z][-\w]*[0-9a-zA-Z].)+[a-zA-Z]{2,9})$/;
 		if (!email.match(regex)) {
 			errors.email = 'Email must be a valid email address';
 		}
+	}
+
+	if (confirmPassword === '') {
+		errors.confirmPassword = 'Please confirm the password by entering again';
 	}
 
 	if (password === '') {

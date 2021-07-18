@@ -22,11 +22,14 @@ module.exports = {
 	Mutation: {
 		async login(_, { username, password }) {
 			const { errors, valid } = validateLoginInput(username, password);
-			const user = await User.findOne({ username });
 
 			if (!valid) {
-				throw new UserInputError('Errors', errors);
+				console.log('The errors we got: ', errors);
+
+				throw new UserInputError('Errors', { errors });
 			}
+
+			const user = await User.findOne({ username });
 
 			if (!user) {
 				errors.general = 'User not found';
@@ -52,9 +55,9 @@ module.exports = {
 		async register(_, { registerInput: { username, email, password, confirmPassword } }) {
 			const { valid, errors } = validateRegisterInput(
 				username,
-				email,
 				password,
-				confirmPassword
+				confirmPassword,
+				email
 			);
 			if (!valid) {
 				throw new UserInputError('Errors', { errors });
